@@ -2,7 +2,7 @@
 This program was produced by the
 CodeWizardAVR V1.25.3 Professional
 Automatic Program Generator
-© Copyright 1998-2007 Pavel Haiduc, HP InfoTech s.r.l.
+?Copyright 1998-2007 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
 Project : ¶şÏàËÄÏß²½½øµç»úÖÆ×÷µÄ¶¨Ê±Î¹ÓãÆ÷
@@ -10,7 +10,7 @@ Version : 1.0
 Date    : 2012-2-15
 Author  : txz                            
 Company : TC                            
-Comments: AVR
+Comments: ÓÃM8µ¥Æ¬»úÇı¶¯²½½øµç»úÖÆ×÷µÄÎ¹ÓãÆ÷
 
 
 Chip type           : ATmega8L
