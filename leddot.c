@@ -10,7 +10,7 @@ Version : 1.0
 Date    : 2012-2-15
 Author  : txz                            
 Company : TC                            
-Comments: 
+Comments: AVR
 
 
 Chip type           : ATmega8L
