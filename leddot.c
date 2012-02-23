@@ -10,7 +10,7 @@ Version : 1.0
 Date    : 2012-2-15
 Author  : txz                            
 Company : TC                            
-Comments: 用M8单片机驱动步进电机制作的喂鱼器
+Comments: 用M8单片机驱动3.5floppy步进电机制作的喂鱼器
 
 
 Chip type           : ATmega8L
