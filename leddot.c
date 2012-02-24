@@ -39,7 +39,7 @@ struct alertInfo{     //喂鱼的时间和喂食量
 
 // Declare your global variables here
 
-struct alertInfo feed[3]={{7,20,4,7,30},{11,30,4,7,40},{22,25,4,22,35}};
+struct alertInfo feed[3]={{7,20,4,7,30},{11,30,4,11,40},{22,25,4,22,35}};
 
 bit manual_light_on=0;    //手动打开鱼缸照明灯标志，1-手动，0-否
 uchar flag;
