@@ -50,9 +50,12 @@ uchar anti_shake;       //消除抖动
 uchar moto_direct=0;  //电机旋转方向
 uchar moto_speed=90;
 uchar np; 
-//步进电机运行数据表 
-//const uchar motortb[]={0x11,0x99,0x88,0xcc,0x44,0x66,0x22,0x33}; 
-const uchar motortb[]={0x01,0x09,0x08,0x0c,0x04,0x06,0x02,0x03}; 
+const uchar motortb[]={0x01,0x09,0x08,0x0c,0x04,0x06,0x02,0x03};  //步进电机运行数据表 
+//const uchar motortb[]={0x01,0x03,0x02,0x06,0x04,0x0c,0x08,0x09};    //新二相八拍
+
+//const uchar motortb[]={0x03,0x06,0x0c,0x09}; //二相四拍顺时针
+//const uchar motortb[]={0x03,0x09,0x0c,0x06}; //二相四拍逆时针
+
 void delay(uchar t); 
 void a_step(uchar d,uchar t);    //电机转一步
 void a_turn(uchar d,uchar t);    //电机转一圈
@@ -60,7 +63,7 @@ void alert_compare();         //闹钟比较
 void key_scan();
 void key_press(uchar key);
 
-// Timer 1 overflow interrupt service routine
+// Timer 1 overflow interrupt service routine timer1中断，每秒闪一次
 interrupt [TIM1_OVF] void timer1_ovf_isr(void)
 {
   // Reinitialize Timer 1 value
