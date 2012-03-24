@@ -2,7 +2,7 @@
 This program was produced by the
 CodeWizardAVR V1.25.3 Professional
 Automatic Program Generator
-© Copyright 1998-2007 Pavel Haiduc, HP InfoTech s.r.l.
+?Copyright 1998-2007 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
 Project : ¶şÏàËÄÏß²½½øµç»úÖÆ×÷µÄ¶¨Ê±Î¹ÓãÆ÷
@@ -51,9 +51,8 @@ uchar moto_direct=0;  //µç»úĞı×ª·½Ïò
 uchar moto_speed=95;
 uchar np; 
 //²½½øµç»úÔËĞĞÊı¾İ±í 
-//const uchar motortb[]={0x11,0x99,0x88,0xcc,0x44,0x66,0x22,0x33}; 
-//const uchar motortb[]={0x01,0x09,0x08,0x0c,0x04,0x06,0x02,0x03}; 
 const uchar motortb[]={0x01,0x03,0x02,0x06,0x04,0x0c,0x08,0x09};    //°ËÅÄ
+
 //const uchar motortb[]={0x03,0x06,0x0c,0x09}; //ËÄÅÄÕı×ª
 //const uchar motortb[]={0x03,0x09,0x0c,0x06}; //ËÄÅÄ·´×ª
 
