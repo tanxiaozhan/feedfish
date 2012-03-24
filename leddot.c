@@ -2,7 +2,7 @@
 This program was produced by the
 CodeWizardAVR V1.25.3 Professional
 Automatic Program Generator
-?Copyright 1998-2007 Pavel Haiduc, HP InfoTech s.r.l.
+© Copyright 1998-2007 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
 Project : ¶şÏàËÄÏß²½½øµç»úÖÆ×÷µÄ¶¨Ê±Î¹ÓãÆ÷
@@ -10,7 +10,7 @@ Version : 1.0
 Date    : 2012-2-15
 Author  : txz                            
 Company : TC                            
-Comments: ÓÃM8µ¥Æ¬»úÇı¶¯3.5floppy²½½øµç»úÖÆ×÷µÄÎ¹ÓãÆ÷
+Comments: 
 
 
 Chip type           : ATmega8L
@@ -39,22 +39,24 @@ struct alertInfo{     //Î¹ÓãµÄÊ±¼äºÍÎ¹Ê³Á¿
 
 // Declare your global variables here
 
-struct alertInfo feed[3]={{7,20,4,7,30},{11,30,4,11,40},{22,25,4,22,35}};
+struct alertInfo feed[3]={{7,20,6,7,30},{11,30,6,11,40},{17,50,6,18,00}};
 
 bit manual_light_on=0;    //ÊÖ¶¯´ò¿ªÓã¸×ÕÕÃ÷µÆ±êÖ¾£¬1-ÊÖ¶¯£¬0-·ñ
 uchar flag;
 uchar curminute;   
-uchar anti_shake;       //Ïû³ı¶¶¶¯
+uint anti_shake;       //Ïû³ı¶¶¶¯
 
 
 uchar moto_direct=0;  //µç»úĞı×ª·½Ïò
-uchar moto_speed=90;
+uchar moto_speed=95;
 uchar np; 
-const uchar motortb[]={0x01,0x09,0x08,0x0c,0x04,0x06,0x02,0x03};  //²½½øµç»úÔËĞĞÊı¾İ±í 
-//const uchar motortb[]={0x01,0x03,0x02,0x06,0x04,0x0c,0x08,0x09};    //ĞÂ¶şÏà°ËÅÄ
+//²½½øµç»úÔËĞĞÊı¾İ±í 
+//const uchar motortb[]={0x11,0x99,0x88,0xcc,0x44,0x66,0x22,0x33}; 
+//const uchar motortb[]={0x01,0x09,0x08,0x0c,0x04,0x06,0x02,0x03}; 
+const uchar motortb[]={0x01,0x03,0x02,0x06,0x04,0x0c,0x08,0x09};    //°ËÅÄ
+//const uchar motortb[]={0x03,0x06,0x0c,0x09}; //ËÄÅÄÕı×ª
+//const uchar motortb[]={0x03,0x09,0x0c,0x06}; //ËÄÅÄ·´×ª
 
-//const uchar motortb[]={0x03,0x06,0x0c,0x09}; //¶şÏàËÄÅÄË³Ê±Õë
-//const uchar motortb[]={0x03,0x09,0x0c,0x06}; //¶şÏàËÄÅÄÄæÊ±Õë
 
 void delay(uchar t); 
 void a_step(uchar d,uchar t);    //µç»ú×ªÒ»²½
@@ -63,7 +65,7 @@ void alert_compare();         //ÄÖÖÓ±È½Ï
 void key_scan();
 void key_press(uchar key);
 
-// Timer 1 overflow interrupt service routine timer1ÖĞ¶Ï£¬Ã¿ÃëÉÁÒ»´Î
+// Timer 1 overflow interrupt service routine
 interrupt [TIM1_OVF] void timer1_ovf_isr(void)
 {
   // Reinitialize Timer 1 value
@@ -89,7 +91,7 @@ DDRB=0x00;
 // Func6=In Func5=In Func4=In Func3=In Func2=In Func1=In Func0=Out 
 // State6=T State5=T State4=T State3=T State2=T State1=T State0=0 
 PORTC=0x00;
-DDRC=0x00;
+DDRC=0x7F;
 
 // Port D initialization
 // Func7=Out Func6=Out Func5=Out Func4=Out Func3=Out Func2=Out Func1=Out Func0=Out 
@@ -164,13 +166,13 @@ run_state_LED=1;      //ÔËĞĞÖ¸Ê¾µÆÁÁ
 
 nowtime.nowyear=12; 
 nowtime.nowmonth=2; 
-nowtime.nowday=19; 
-nowtime.nowhour=22; 
-nowtime.nowminute=19; 
-nowtime.nowsecond=30; 
-nowtime.nowweek=7;
+nowtime.nowday=26; 
+nowtime.nowhour=13; 
+nowtime.nowminute=36; 
+nowtime.nowsecond=50; 
+nowtime.nowweek=1;
 
-ds1302_write_time();
+//ds1302_write_time();
 curminute=nowtime.nowminute;
 while(1)
 {
@@ -227,7 +229,7 @@ void alert_compare()
     for (i=0;i<3;i++) {
         //Î¹ÓãÅĞ¶Ï
         if(feed[i].hour==nowtime.nowhour && feed[i].minute==nowtime.nowminute && curminute!=nowtime.nowminute){
-            //feed_light=1;       //¿ªÓã¸×ÕÕÃ÷µÆ
+            feed_light=1;       //¿ªÓã¸×ÕÕÃ÷µÆ
             for(j=0;j<feed[i].turns;j++){
                 a_turn(moto_direct,moto_speed);
             }
@@ -236,7 +238,7 @@ void alert_compare()
         
         //¹ØÓã¸×ÕÕÃ÷µÆÅĞ¶Ï
         if(feed[i].light_off_hour==nowtime.nowhour && feed[i].light_off_minute==nowtime.nowminute && !manual_light_on){
-            //feed_light=0;    //¹Ø±ÕÓã¸×ÕÕÃ÷µÆ
+            feed_light=0;    //¹Ø±ÕÓã¸×ÕÕÃ÷µÆ
         }
     }
 }   
@@ -257,7 +259,7 @@ void key_scan()
 
 void key_press(uchar key)
 {
-    if(anti_shake<180)     //Ïû³ı°´¼ü¶¶¶¯
+    if(anti_shake<700)     //Ïû³ı°´¼ü¶¶¶¯
     {
         anti_shake++;
         return;
