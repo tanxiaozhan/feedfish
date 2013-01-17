@@ -10,7 +10,7 @@ Version : 1.0
 Date    : 2012-2-15
 Author  : txz                            
 Company : TC                            
-Comments: 用M8单片机驱动3.5floppy步进电机制作的喂鱼器
+Comments: 
 
 
 Chip type           : ATmega8L
@@ -39,22 +39,23 @@ struct alertInfo{     //喂鱼的时间和喂食量
 
 // Declare your global variables here
 
-struct alertInfo feed[3]={{7,20,4,7,30},{11,30,4,11,40},{22,25,4,22,35}};
+struct alertInfo feed[3]={{7,20,6,7,30},{11,30,6,11,40},{17,50,6,18,00}};
 
 bit manual_light_on=0;    //手动打开鱼缸照明灯标志，1-手动，0-否
 uchar flag;
 uchar curminute;   
-uchar anti_shake;       //消除抖动
+uint anti_shake;       //消除抖动
 
 
 uchar moto_direct=0;  //电机旋转方向
-uchar moto_speed=90;
+uchar moto_speed=95;
 uchar np; 
-const uchar motortb[]={0x01,0x09,0x08,0x0c,0x04,0x06,0x02,0x03};  //步进电机运行数据表 
-//const uchar motortb[]={0x01,0x03,0x02,0x06,0x04,0x0c,0x08,0x09};    //新二相八拍
+//步进电机运行数据表 
+const uchar motortb[]={0x01,0x03,0x02,0x06,0x04,0x0c,0x08,0x09};    //八拍
 
-//const uchar motortb[]={0x03,0x06,0x0c,0x09}; //二相四拍顺时针
-//const uchar motortb[]={0x03,0x09,0x0c,0x06}; //二相四拍逆时针
+//const uchar motortb[]={0x03,0x06,0x0c,0x09}; //四拍正转
+//const uchar motortb[]={0x03,0x09,0x0c,0x06}; //四拍反转
+
 
 void delay(uchar t); 
 void a_step(uchar d,uchar t);    //电机转一步
@@ -63,7 +64,7 @@ void alert_compare();         //闹钟比较
 void key_scan();
 void key_press(uchar key);
 
-// Timer 1 overflow interrupt service routine timer1中断，每秒闪一次
+// Timer 1 overflow interrupt service routine
 interrupt [TIM1_OVF] void timer1_ovf_isr(void)
 {
   // Reinitialize Timer 1 value
@@ -89,7 +90,7 @@ DDRB=0x00;
 // Func6=In Func5=In Func4=In Func3=In Func2=In Func1=In Func0=Out 
 // State6=T State5=T State4=T State3=T State2=T State1=T State0=0 
 PORTC=0x00;
-DDRC=0x00;
+DDRC=0x7F;
 
 // Port D initialization
 // Func7=Out Func6=Out Func5=Out Func4=Out Func3=Out Func2=Out Func1=Out Func0=Out 
@@ -164,13 +165,13 @@ run_state_LED=1;      //运行指示灯亮
 
 nowtime.nowyear=12; 
 nowtime.nowmonth=2; 
-nowtime.nowday=19; 
-nowtime.nowhour=22; 
-nowtime.nowminute=19; 
-nowtime.nowsecond=30; 
-nowtime.nowweek=7;
+nowtime.nowday=26; 
+nowtime.nowhour=13; 
+nowtime.nowminute=36; 
+nowtime.nowsecond=50; 
+nowtime.nowweek=1;
 
-ds1302_write_time();
+//ds1302_write_time();
 curminute=nowtime.nowminute;
 while(1)
 {
@@ -227,7 +228,7 @@ void alert_compare()
     for (i=0;i<3;i++) {
         //喂鱼判断
         if(feed[i].hour==nowtime.nowhour && feed[i].minute==nowtime.nowminute && curminute!=nowtime.nowminute){
-            //feed_light=1;       //开鱼缸照明灯
+            feed_light=1;       //开鱼缸照明灯
             for(j=0;j<feed[i].turns;j++){
                 a_turn(moto_direct,moto_speed);
             }
@@ -236,7 +237,7 @@ void alert_compare()
         
         //关鱼缸照明灯判断
         if(feed[i].light_off_hour==nowtime.nowhour && feed[i].light_off_minute==nowtime.nowminute && !manual_light_on){
-            //feed_light=0;    //关闭鱼缸照明灯
+            feed_light=0;    //关闭鱼缸照明灯
         }
     }
 }   
@@ -257,7 +258,7 @@ void key_scan()
 
 void key_press(uchar key)
 {
-    if(anti_shake<180)     //消除按键抖动
+    if(anti_shake<700)     //消除按键抖动
     {
         anti_shake++;
         return;
